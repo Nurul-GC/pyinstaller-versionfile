@@ -18,6 +18,7 @@ matrix:
     - pip install pyinstaller
     env:
       - PATH=/c/Python36:/c/Python36/Scripts:$PATH
+      - TOXENV=py36-tests-win
       - includeE2E=True
 
   - stage: deploy
