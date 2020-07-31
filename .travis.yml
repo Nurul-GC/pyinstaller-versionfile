@@ -2,7 +2,6 @@ language: python
 cache: pip
 python:
   - 2.7
-  - 3.4
   - 3.5
   - 3.6
   - 3.7
@@ -10,8 +9,8 @@ python:
 
 matrix:
   include:
-  - stage: unit test
-    if: python = 3.6
+  - stage: test
+  - if: python = 3.6
     after_success: codecov
 
   - stage: integration test
@@ -26,6 +25,7 @@ matrix:
       - includeE2E=True
 
   - stage: deploy
+    if: branch = master
     name: "Deploy to PyPI"
     install: skip
     script: skip
@@ -42,6 +42,6 @@ matrix:
 install:
   - pip install tox
   - pip install tox-travis
-  - if [ "$TOXENV" = "py36-tests-cov" ]; then pip install codecov; fi
+  - pip install codecov
 
 script: tox
