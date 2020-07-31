@@ -40,7 +40,8 @@ matrix:
       distributions: "sdist bdist_wheel"
 
 install:
-  - pip install tox, tox-travis
+  - pip install tox
+  - pip install tox-travis
   - if [ "$TOXENV" = "py36-tests-cov" ]; then pip install codecov; fi
 
 script: tox
