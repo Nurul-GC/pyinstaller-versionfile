@@ -9,10 +9,6 @@ python:
 
 matrix:
   include:
-  - stage: test
-  - if: python = 3.6
-    after_success: codecov
-
   - stage: integration test
     os: windows
     language: shell
@@ -45,3 +41,6 @@ install:
   - pip install codecov
 
 script: tox
+
+after_success:
+  - if [ "$TRAVIS_PYTHON_VERSION" = "3.6" ]; then codecov; fi
