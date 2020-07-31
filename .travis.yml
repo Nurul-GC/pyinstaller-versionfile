@@ -1,38 +1,28 @@
 language: python
 cache: pip
-jobs:
+python:
+  - 2.7
+  - 3.4
+  - 3.5
+  - 3.6
+  - 3.7
+  - 3.8
+
+matrix:
   include:
   - stage: unit test
-    name: Python 2.7 on Linux
-    python: 2.7
-    env: TOXENV=py27-tests
-  - name: Python 3.5 on Linux
-    python: 3.5
-    env: TOXENV=py35-tests
-  - name: Python 3.6 on Linux with Code Coverage
-    python: 3.6
-    env: TOXENV=py36-tests-cov
+    if: python = 3.6
     after_success: codecov
-  - name: Python 3.7 on Linux
-    python: 3.7
-    env: TOXENV=py37-tests
-  - name: Python 3.8 on Linux
-    python: 3.8
-    env: TOXENV=py38-tests
-  - name: Linter
-    python: 3.6
-    env: TOXENV=lint
 
   - stage: integration test
-    name: Python 3.6 on Windows for End2End tests
     os: windows
     language: shell
     before_install:
     - choco install python --version 3.6
     - python -m pip install --upgrade pip
+    - pip install pyinstaller
     env:
       - PATH=/c/Python36:/c/Python36/Scripts:$PATH
-      - TOXENV=py36-tests-win
       - includeE2E=True
 
   - stage: deploy
@@ -50,8 +40,7 @@ jobs:
       distributions: "sdist bdist_wheel"
 
 install:
-  - pip install tox
+  - pip install tox, tox-travis
   - if [ "$TOXENV" = "py36-tests-cov" ]; then pip install codecov; fi
-  - if [ "$TOXENV" = "py36-tests-win" ]; then pip install pyinstaller; fi
 
 script: tox
